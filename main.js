@@ -115,6 +115,19 @@ export const updateMovie = async ({ params, request, response }) => {
     response.body = response.body = { message: `Cannot find rank ${params.rank}` }
 
 }
+export const removeMovie = ({ params, response }) => {
+    const beforeLength = movies.length
+    movies = movies.filter(movie => movie.rank.toString() !== params.rank.toString())
+    if (movies.length === beforeLength) {
+        console.log("done");
+
+        response.status = 400
+        response.body = { message: `Cannot find rank ${params.rank}` }
+        return
+    }
+    response.status = 200
+    response.body = { message: 'delete success' }
+}
 
 const router = new Router();
 router
@@ -122,7 +135,7 @@ router
     .get('/movies/:title', getMovie)
     .post('/movies', addMovie)
     .put('/movies/:rank', updateMovie)
-// .delete('/movies/:name', removeMovie)
+    .delete('/movies/:rank', removeMovie)
 
 const app = new Application();
 
