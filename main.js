@@ -1,8 +1,8 @@
-import { Application, Router } from "https://deno.land/x/oak/mod.ts";
+import { Application, Router } from "https://deno.land/x/oak/mod.ts"
 
-const env = Deno.env.toObject();
-const PORT = env.PORT || 4000;
-const HOST = env.HOST || "127.0.0.1";
+const env = Deno.env.toObject()
+const PORT = env.PORT || 4000
+const HOST = env.HOST || "127.0.0.1"
 
 let movies = [
     {
@@ -71,12 +71,11 @@ let movies = [
 
 export const getMovies = ({ response }) => response.body = movies
 export const getMovie = ({ params, response, }) => {
-    console.log("reques params", params);
-    const movie = movies.filter((movie) => movie.title === params.title)
-    console.log("movie", movie);
-
+    console.log("req params : ", params);
+    const movie = movies.filter((movie) => movie.title.toLowerCase() === params.title.toLowerCase())
     if (movie.length) {
         response.status = 200
+        console.log("res : ", movie[0])
         response.body = movie[0]
         return
     }
@@ -84,11 +83,23 @@ export const getMovie = ({ params, response, }) => {
     response.status = 400
     response.body = { message: `Cannot find title ${params.rank}` }
 }
+export const addMovie = async ({ request, response }) => {
+    const body = await request.body()
+    console.log("req body : ", body)
+    const movie = body.value
+    movies.push(movie)
+    response.status = 200
+    response.body = {
+        message: "add success",
+        movies
+    }
+}
+
 const router = new Router();
 router
     .get('/movies', getMovies)
     .get('/movies/:title', getMovie)
-// .post('/movies', addMovie)
+    .post('/movies', addMovie)
 // .put('/movies/:name', updateMovie)
 // .delete('/movies/:name', removeMovie)
 
@@ -97,6 +108,6 @@ const app = new Application();
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-console.log(`Listening on port ${PORT}...`);
+console.log(`Listening on port ${PORT}...`)
 
 await app.listen(`${HOST}:${PORT}`)
