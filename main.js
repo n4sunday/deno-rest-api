@@ -81,7 +81,7 @@ export const getMovie = ({ params, response, }) => {
     }
 
     response.status = 400
-    response.body = { message: `Cannot find title ${params.rank}` }
+    response.body = { message: `Cannot find title ${params.title}` }
 }
 export const addMovie = async ({ request, response }) => {
     const body = await request.body()
@@ -94,13 +94,34 @@ export const addMovie = async ({ request, response }) => {
         movies
     }
 }
+export const updateMovie = async ({ params, request, response }) => {
+    console.log("req params : ", params);
+    const temp = movies.filter(movie => movie.rank.toString() === params.rank.toString())
+    const body = await request.body()
+    console.log("req body : ", body)
+    const { title, distributor, domestic_gross } = body.value
+    if (temp.length) {
+        temp[0].title = title ? title : temp[0].title
+        temp[0].distributor = distributor ? distributor : temp[0].distributor
+        temp[0].domestic_gross = domestic_gross ? domestic_gross : temp[0].domestic_gross
+        response.status = 200
+        response.body = {
+            message: "update success",
+            movie: temp[0]
+        }
+        return
+    }
+    response.status = 400
+    response.body = response.body = { message: `Cannot find rank ${params.rank}` }
+
+}
 
 const router = new Router();
 router
     .get('/movies', getMovies)
     .get('/movies/:title', getMovie)
     .post('/movies', addMovie)
-// .put('/movies/:name', updateMovie)
+    .put('/movies/:rank', updateMovie)
 // .delete('/movies/:name', removeMovie)
 
 const app = new Application();
