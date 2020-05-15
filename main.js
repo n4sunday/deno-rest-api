@@ -70,11 +70,24 @@ let movies = [
 ]
 
 export const getMovies = ({ response }) => response.body = movies
+export const getMovie = ({ params, response, }) => {
+    console.log("reques params", params);
+    const movie = movies.filter((movie) => movie.title === params.title)
+    console.log("movie", movie);
 
+    if (movie.length) {
+        response.status = 200
+        response.body = movie[0]
+        return
+    }
+
+    response.status = 400
+    response.body = { message: `Cannot find title ${params.rank}` }
+}
 const router = new Router();
 router
     .get('/movies', getMovies)
-// .get('/movies/:name', getMovie)
+    .get('/movies/:title', getMovie)
 // .post('/movies', addMovie)
 // .put('/movies/:name', updateMovie)
 // .delete('/movies/:name', removeMovie)
