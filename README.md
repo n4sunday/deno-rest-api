@@ -17,8 +17,5 @@ Try running a simple program:
 ### Parameter
 | Request        | Method | Description          |
 |----------------|--------|----------------------|
-| /movies        | GET    | get all movies       |
-| /movies/:title | GET    | get movie by title   |
-| /movies        | POST   | add movie            |
-| /movies/:rank  | PUT    | update movie by rank |
-| /movie/:rank   | DELETE | delete movie by rank |
+| /users         | POST   | create users         |
+| /users         | GET    | get all users        |
