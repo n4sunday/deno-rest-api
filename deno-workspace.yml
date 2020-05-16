@@ -1,0 +1,27 @@
+scripts:
+  # "denox run start" will execute main.ts with example.com networking permissions
+  start:
+    file: main.js
+    deno_options:
+      reload: true
+      allow-env: true
+      allow-net:
+        - localhost
+        - d2xapi.medizerva.com:3306
+        - github.com
+      allow-read: true
+      allow-write: false
+  # "denox run develop" will execute main.ts with localhost networking permissions and source code cache reloaded
+  dev:
+    file: main.js
+    deno_options:
+      reload: true
+      allow-env: true
+      allow-net:
+        - localhost
+        - 127.0.0.1:4000
+        - d2xapi.medizerva.com:3306
+        - github.com
+        - deno.land
+      allow-read: true
+      allow-write: false

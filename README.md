@@ -11,7 +11,7 @@ eno ships as a single executable with no dependencies. You can install it using 
 ### Getting Started
 Try running a simple program:
 
-    deno run --allow-env --allow-net main.js 
+    deno run --allow-env --allow-read --allow-net main.js
 
 
 ### Parameter
