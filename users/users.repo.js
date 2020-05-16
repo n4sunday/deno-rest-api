@@ -36,8 +36,8 @@ class UsersRepo {
     async getInfoUserBy(data) {
         let result = await client.execute(`SELECT email,username,role,password FROM users WHERE username=? OR email=?`,
             [
-                data.info,
-                data.info,
+                data.username,
+                data.email,
             ]
         )
         if (result.rows.length !== 0) {

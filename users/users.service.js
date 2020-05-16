@@ -9,34 +9,40 @@ const usersService = {
         return users
     },
     async addUser(data) {
-        data.password = bcrypt.hashpw(data.password)
-        const users = await userRepo.create(data)
-        return users
+        const newData = {
+            email: data.email,
+            username: data.username
+        }
+        const userInRepo = await usersRepo.getInfoUserBy(newData)
+        if (newData.email === userInRepo.email) {
+            return { msg: `this email already exists` }
+        }
+        else if (data.username === userInRepo.username) {
+            return { msg: `this username already exists` }
+        }
+        else {
+            const result = bcrypt.checkpw(data.password, userInRepo.password)
+            data.password = bcrypt.hashpw(data.password)
+            const users = await userRepo.create(data)
+            return users
+        }
     },
     async getUser(id) {
         const user = await userRepo.getById(id)
         return user
     },
     async loginUser(data) {
-        const userInRepo = await usersRepo.getInfoUserBy(data)
+        const newData = {
+            email: data.info,
+            username: data.info
+        }
+        const userInRepo = await usersRepo.getInfoUserBy(newData)
         if (data.info === userInRepo.email || data.info === userInRepo.username) {
             const result = bcrypt.checkpw(data.password, userInRepo.password)
-            if (result) {
-                return {
-                    msg: `login success`
-                }
-            }
-            else {
-                return {
-                    msg: `incorrect password`
-                }
-            }
+            if (result) { return { msg: `login success` } }
+            else { return { msg: `incorrect password` } }
         }
-        else {
-            return {
-                msg: `don't have your account`
-            }
-        }
+        else { return { msg: `don't have your account` } }
 
     }
 }

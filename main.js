@@ -8,7 +8,6 @@ export const addUser = async ({ request, response }) => {
   let result = await client.execute(`INSERT INTO users(name) values(?)`, [
     name,
   ]);
-  console.log(result);
   if (result) {
     response.status = 200;
     response.body = { message: "add success" };
