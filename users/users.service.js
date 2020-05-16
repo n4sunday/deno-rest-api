@@ -1,4 +1,4 @@
-import userRepo from "./users.repositories.js"
+import userRepo from "./users.repo.js"
 
 const usersService = {
     async getUsers() {
