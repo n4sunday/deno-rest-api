@@ -1,4 +1,4 @@
-import { Router } from "https://deno.land/x/oak/mod.ts";
+import { Router } from "https://deno.land/x/oak/mod.ts"
 import usersService from './users.service.js'
 
 const router = new Router()
@@ -32,6 +32,11 @@ const loginUser = async ({ request, response }) => {
     return response
 }
 
+const helloDeno = async (ctx) => {
+    return ctx.response.body = 'Hello Deno 🦕'
+}
+
+router.get("/", helloDeno)
 router
     .get("/users", getUsers)
     .post("/users", addUser)
